@@ -1,0 +1,193 @@
+
+<html>
+
+    <head>
+    
+        <script>
+            /*Agora é hora de pensar!
+Com o projeto de desenvolvimento de caixa eletrônico, encontramos algumas questões que são muito importantes, mas não foram aplicadas. Vamos aplicá-las uma a uma. 
+
+- Ao acessar o sistema, pergunte o nome do usuário e diga "Olá {Nome} é um prazer ter você por aqui!".
+
+- Sempre que o usuário for sacar dinheiro, o valor restante não pode ser negativo, ou seja, caso o usuário tente sacar mais do que tem em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada". 
+
+- Sempre que o usuário for sacar dinheiro, o valor a ser sacado não pode ser igual ou menor a zero. Exiba uma mensagem de "Operação não autorizada". 
+
+- Adicionar a opção para ver o extrato (Coloque algumas compras ou depósitos fictícios). 
+
+- Adicionar a opção para fazer uma transferência. A transferência consiste em você informar o número de uma conta (pode ser qualquer número, mas obrigatoriamente um número, ou seja, nenhum outro caractere deve ser aceito), perguntar o valor da transferência e remover o valor da conta da mesma forma como na ação do saldo. Caso o usuário tente transferir mais do que tem em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada". 
+
+- Sempre que o usuário for transferir dinheiro,  o valor a ser transferido não pode ser igual ou menor a zero, ou seja, caso o usuário tente transferir mais do que tem em saldo, a ação não deve ocorrer. Exiba uma mensagem de "Operação não autorizada". 
+
+- A ordem das opções deve ser: Saldo, Extrato, Saque, Depósito, Transferência e Sair. 
+
+- Atualize a função "erro" com as novas opções do menu.
+
+- Caso o usuário informe um valor para depósito igual ou menor que zero, não deixe a operação ocorrer. Exiba uma mensagem de "Operação não autorizada". 
+
+- Sempre que o usuário for acessar o saldo, sacar, retirar o extrato ou transferir dinheiro é necessário que ele informe uma senha. Essa senha deve validada com uma condicional. A senha é 3589. 
+
+- Quando o usuário escolher sair do sistema, exiba uma mensagem agradecendo por utilizar os serviços do banco: "{Nome}, foi um prazer ter você por aqui!".
+
+- Na função "inicio", utilize escolha/caso (switch/case) para validar a opção do usuário. */
+//funcão recursiva chama a si  mesma ex. linha31
+            var saldo = 10000.50; //Float 1.36
+            var array = ["Saque 4000", "3500", "2500"]
+            var boolean = false;
+            function inicio() {
+                var nome = prompt("Olá, para prosseguirmos, por favor digite seu nome.");
+
+                    alert("Olá " + nome + " é um prazer ter você você por aqui!");
+
+                var escolha = parseInt(prompt('Selecione uma opção \n1.) Saldo 2.) Depósito 3.) Saque 4.) Extrato 5.) Tranferência 6.)Sair'));
+    
+                switch (escolha ) {
+                 case 1: 
+                 if (conf_senha() === true){
+                        ver_saldo();
+                    }
+                    break;
+
+                 case 2: 
+                 if (conf_senha() === true){
+                        ver_extrato();
+                    }
+                    break;
+
+                 case 3: 
+                 if(conf_senha()===true){
+                        fazer_saque
+                    }
+                    break;
+                
+                 case 4: 
+                 if (conf_senha() === true){
+                        fazer_deposito
+                    }
+                    break;
+
+                case 5: 
+                 if(conf_senha() === true){
+                        transferência();
+                    }
+                    break;
+
+                case 6: 
+                sair();
+                    break;
+
+                    default:
+                        erro();
+                }
+                    };	
+    
+            function ver_saldo() {
+                alert('Seu saldo atual é: ' + saldo);
+                inicio();
+            };
+    
+            function fazer_deposito() {
+                var deposito = parseFloat(prompt('Qual o valor para depósito?'));
+               
+                if (isNaN(deposito) || deposito === '')
+              {
+                    alert('Por favor, informe um número:');
+                    fazer_deposito();
+                } else {
+                    saldo += deposito;
+                    exiba_extrato("Depósito: " + deposito)
+                    // saldo= saldo + deposito(mesma coisa)
+                    ver_saldo();
+                }
+            }
+
+			function extrato(operação){
+			array.push(operação);
+		}
+            function fazer_saque() {
+                var saque = parseFloat(prompt('Qual o valor para saque?'));
+                if (isNaN(saque) || saque === '') {
+                    alert('Por favor, informe um número:');
+                    fazer_saque();
+                } else {
+                   if ( saque > 0 && saque <= saldo){
+                     if (saque >= saldo){
+                        alert("Operação inválida");
+                        fazer_saque();
+                    } else {
+                        saldo -= saque;
+                        exiba_extrato("Seu saque " + saque);
+                        ver_saldo();
+                      }
+                    } else {
+                    alert ( " Operação inválida");
+                    fazer_saque();
+                   }
+                };
+            };
+
+           
+            function tranferencia() {
+                var conta = prompt("Qual o número da conta que você deseja transferir: ");
+
+                if(isNaN (conta)  || conta === ""){
+                    alert ("Operação inválida! ")
+                } else{
+                    var valor = prompt ("Digite o valor da sua transferência: ");
+                    if (valor > saldo) {
+                        alert("Operação inválida");
+                        tranferencia();
+                    }else {
+                        saldo -= valor;
+                        exiba_extrato("Tranfência para a conta: " + conta + " valor: " + valor)
+                        ver_saldo();
+                        
+                    }
+                }
+            }
+    
+            function erro() {
+                alert('Por favor, informe um número entre 1 e 6');
+                inicio();
+            }
+            function ver_extrato(operação){
+                array.push(operação)
+            }
+            function exiba_extrato(){
+                alert(array);
+                inicio();
+            }
+
+            function conf_senha() {
+                var senha = prompt("Digite a sua senha: ");
+                boolean = senha == 3589;
+                if (senha != 3589){
+                    alert("Senha inválida, tente novamente!");
+                    inicio();
+                }else {
+                    return true;
+                }
+            }
+
+    
+            function sair() {
+                var confirma = confirm("Você deseja sair?");
+                if (confirma) {
+                    alert(nome + " foi um prazer ter você por aqui!")
+                    window.close();
+                } else {
+                   
+                    inicio();
+                }
+            }
+            //  window.close fecha a janela do código
+             //confirm daria mais uma opção se ela dejesaria sair 
+            //confirm ele aparece ok ou cancelar
+              /*isNan  é só do javascrpit ele pergunta se isso né ou não um número*/ 
+    
+        
+            inicio();
+        </script>
+        </head>
+       
+        </html>
